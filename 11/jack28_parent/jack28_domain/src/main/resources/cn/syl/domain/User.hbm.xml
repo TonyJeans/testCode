@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="cn.syl.domain">
+    <class name="User" table="USER_P" dynamic-insert="true" dynamic-update="true">
+        <id name="id" column="USER_ID"><!--使得数据库默认值生效,在插入或更新时候-->
+            <!--手动生成-->
+            <generator class="assigned"/>
+        </id>
+
+        <property name="userName" column="USER_NAME"/>
+        <property name="password" column="PASSWORD"/>
+        <property name="state" column="STATE"/>
+        <property name="createBy" column="CREATE_BY"/>
+        <property name="createDept" column="CREATE_DEPT"/>
+        <property name="createTime" column="CREATE_TIME"/>
+        <property name="updateBy" column="UPDATE_BY"/>
+        <property name="updateTime" column="UPDATE_TIME"/>
+
+        <!-- 先配置多方
+            name	当前JavaBean中的属性
+            class	属性的全路径
+            column	外键的字段
+        -->
+        <!--用户与部门:多对一-->
+        <many-to-one name="dept" class="Dept" column="DEPT_ID" />
+
+        <!--private UserInfo userInfo; //一个用户对一个用户信息-->
+        <!--基于主键的一对一,保存用户级联userInfo-->
+        <one-to-one name="userInfo" class="UserInfo" cascade="all"/>
+
+        <!--private Set<Role> roles = new HashSet<>();//用户与角色多对多.-->
+
+        <set name="roles" table="ROLE_USER_P">
+            <key column="USER_ID"/>
+            <many-to-many class="Role" column="ROLE_ID" order-by="ORDER_NO"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+    <!-- 加载配置文件 -->
+    <context:property-placeholder location="classpath:db.properties" />
+    <!-- 数据库连接池 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+          destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="maxActive" value="10" />
+        <property name="maxIdle" value="5" />
+    </bean>
+
+  <!--整合后会话工程归spring管理-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+       <!--指定mybatis核心配置文件-->
+        <property name="configLocation" value="classpath:SqlMapConfig.xml"></property>
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!--配置原生dao实现-->
+    <bean id="userDao" class="com.syl.dao.UserDaoImpl">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"></property>
+    </bean>
+
+    <!--动态代理方式的实现Mapper接口代理,两种方法-->
+    <!--<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+        <!--&lt;!&ndash;配置mapper接口的全路径名称&ndash;&gt;-->
+        <!--<property name="mapperInterface" value="com.syl.mapper.UserMapper"></property>-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory"></property>-->
+    <!--</bean>-->
+
+    <!--使用包扫码的方式批量引入mapper-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--指定要扫描的全路径名称,有多个包用逗号分割
+       扫描后使用可以类名首字母小写引用
+        -->
+         <property name="basePackage" value="com.syl.mapper"></property>
+    </bean>
+</beans>

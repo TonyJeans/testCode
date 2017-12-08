@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <bean id="loginAction" class="cn.syl.action.LoginAction" scope="prototype"></bean>
+    <bean id="homeAction" class="cn.syl.action.HomeAction" scope="prototype"></bean>
+    <bean id="deptAction" class="cn.syl.action.sysadmin.DeptAction" scope="prototype">
+        <property name="deptService" ref="deptService"/>
+    </bean>
+    <bean id="userAction" class="cn.syl.action.sysadmin.UserAction" scope="prototype">
+        <property name="userService" ref="userService"/>
+        <property name="deptService" ref="deptService"/>
+        <property name="roleService" ref="roleService"/>
+        <property name="moduleService" ref="moduleService"/>
+    </bean>
+
+    <bean id="roleAction" class="cn.syl.action.sysadmin.RoleAction" scope="prototype">
+        <property name="roleService" ref="roleService"/>
+        <property name="moduleService" ref="moduleService"/>
+    </bean>
+
+    <bean id="moduleAction" class="cn.syl.action.sysadmin.ModuleAction" scope="prototype">
+        <property name="moduleService" ref="moduleService"/>
+    </bean>
+
+    <!--货运管理功能模块-->
+    <bean id="contractAction" class="cn.syl.action.cargo.ContractAction" scope="prototype">
+        <property name="contractService" ref="contractService"/>
+    </bean>
+
+    <bean id="contractProductAction" class="cn.syl.action.cargo.ContractProductAction" scope="prototype">
+        <property name="contractProductService" ref="contractProductService"/>
+        <property name="factoryService" ref="factoryService"/>
+    </bean>
+
+    <bean id="extCproductAction" class="cn.syl.action.cargo.ExtCproductAction" scope="prototype">
+        <property name="extCproductService" ref="extCproductService"/>
+        <property name="factoryService" ref="factoryService"/>
+    </bean>
+
+    <!--出货表action-->
+    <bean id="outProductAction" class="cn.syl.action.cargo.OutProductAction" scope="prototype">
+        <property name="contractProductService" ref="contractProductService"/>
+    </bean>
+<!--报运-->
+    <bean id="exportAction" class="cn.syl.action.cargo.ExportAction" scope="prototype">
+        <property name="contractService" ref="contractService"/>
+        <property name="exportService" ref="exportService"/>
+        <property name="exportProductService" ref="exportProductService"/>
+        <property name="epService" ref="exportClient"/>
+    </bean>
+
+    <!--统计分析-->
+    <bean id="statChartAction" class="cn.syl.action.stat.StatChartAction" scope="prototype">
+        <property name="sqlDao" ref="sqlDao"/>
+    </bean>
+
+</beans>

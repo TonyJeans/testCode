@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<!--已经使用spirng管理-->
+	<!--	<properties resource="db.properties"></properties>-->
+	
+	<typeAliases>
+	<!-- 
+			定义pojo类别名
+			type类的 全路径名称
+			alias别名
+	 -->
+	<!-- 	<typeAlias type="com.syl.pojo.User" alias="user"/> -->
+		
+		<!-- 使用包扫码定义别名 
+		定义后别名等于类名,不区分大小写,建议按照驼峰命名法
+		-->
+		<package name="com.syl.pojobak"/>
+	</typeAliases>
+
+	<!-- 和spring整合后 environments配置将废除-->
+<!--	<environments default="development">
+		<environment id="development">
+		&lt;!&ndash; 使用jdbc事务管理&ndash;&gt;
+			<transactionManager type="JDBC" />
+		&lt;!&ndash; 数据库连接池&ndash;&gt;
+			<dataSource type="POOLED">
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+			</dataSource>
+		</environment>
+	</environments>-->
+	
+	<mappers>
+		<mapper resource="User.xml"/>
+		<!-- 
+		class引入接口全路径名
+		1.接口名称和映射文件名称要一致
+		2.放在同一个目录下
+		 -->
+		<!-- <mapper class="com.syl.mapper.UserMapper"/> -->
+		
+		<!-- 使用包扫描的方式批量引入
+		1.接口名称和映射文件名称要一致
+		2.放在同一个目录下
+		 -->
+		<!--spring包扫描开启后,这个就不需要了-->
+		<!--<package name="com.syl.mapper"/>-->
+	</mappers>
+</configuration>

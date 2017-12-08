@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="cn.syl.domain">
+    <class name="Role" table="ROLE_P" dynamic-insert="true" dynamic-update="true">
+        <id name="id" column="ROLE_ID"><!--使得数据库默认值生效,在插入或更新时候-->
+
+            <generator class="uuid"/>
+        </id>
+
+        <property name="name" column="NAME"/>
+        <property name="remark" column="REMARK"/>
+        <property name="orderNo" column="ORDER_NO"/>
+        <property name="createBy" column="CREATE_BY"/>
+        <property name="createDept" column="CREATE_DEPT"/>
+        <property name="createTime" column="CREATE_TIME"/>
+        <property name="updateBy" column="UPDATE_BY"/>
+        <property name="updateTime" column="UPDATE_TIME"/>
+
+
+        <!--private Set<User> users=new HashSet<>();//角色与用户多对多-->
+        <!--
+            set name集合属性名称
+            table 中间表名称
+            key column你当前配置的xml在中间表的外间字段
+            many to many class set集合类型 column 集合类型在中间表的外键字段
+        -->
+        <set name="users" table="ROLE_USER_P">
+            <key column="ROLE_ID"/>
+            <many-to-many class="User" column="USER_ID"/>
+        </set>
+
+        <!--private Set<Module> modules = new HashSet<>();角色与模块多对多-->
+        <set name="modules" table="ROLE_MODULE_P">
+            <key column="ROLE_ID"/>
+            <many-to-many class="Module" column="MODULE_ID" order-by="ORDER_NO"/>
+        </set>
+
+    </class>
+</hibernate-mapping>

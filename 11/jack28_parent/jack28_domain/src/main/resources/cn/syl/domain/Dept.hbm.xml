@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="cn.syl.domain">
+    <class name="Dept" table="DEPT_P">
+        <id name="id" column="DEPT_ID">
+            <generator class="uuid"></generator>
+        </id>
+
+        <property name="deptName" column="DEPT_NAME"/>
+        <property name="state" column="STATE"/>
+
+        <!-- 配置自关联属性 多个子部门 对同个父亲 多对一 -->
+        <many-to-one name="parent" class="Dept" column="PARENT_ID">
+        </many-to-one>
+
+        <!-- 配置一方 -->
+        <!--
+            set标签name属性：表示集合的名称
+            cascade="save-update,delete"
+            cascade="delete-orphan"
+            inverse="true"
+-->
+        <set name="users">
+            <!-- 外键的字段 -->
+            <key column="DEPT_ID"/>
+            <!--集合装的啥 一个部门有多个用户-->
+            <one-to-many class="User" />
+        </set>
+    </class>
+</hibernate-mapping>

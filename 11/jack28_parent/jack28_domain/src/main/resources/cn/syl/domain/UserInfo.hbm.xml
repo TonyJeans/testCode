@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="cn.syl.domain">
+    <class name="UserInfo" table="USER_INFO_P" dynamic-update="true" dynamic-insert="true">
+        <id name="id" column="USER_INFO_ID">
+            <!--手动生成-->
+            <generator class="assigned"/>
+        </id>
+
+        <property name="name" column="NAME"/>
+        <property name="joinDate" column="JOIN_DATE"/>
+        <property name="salary" column="SALARY"/>
+        <property name="birthday" column="BIRTHDAY"/>
+        <property name="gender" column="GENDER"/>
+        <property name="station" column="STATION"/>
+        <property name="telephone" column="TELEPHONE"/>
+        <property name="degree" column="DEGREE"/>
+        <property name="remark" column="REMARK"/>
+        <property name="orderNo" column="ORDER_NO "/>
+        <property name="createBy" column="CREATE_BY"/>
+        <property name="createDept" column="CREATE_DEPT"/>
+        <property name="createTime" column="CREATE_TIME"/>
+        <property name="updateBy" column="UPDATE_BY  "/>
+        <property name="updateTime" column="UPDATE_TIME"/>
+        <property name="email" column="EMAIL"/>
+
+
+        <!-- 先配置多方
+            name	当前JavaBean中的属性
+            class	属性的全路径
+            column	外键的字段
+        -->
+        <!--private User      manager  ;  //直属领导 多个用户一个领导-->
+        <!--???-->
+        <many-to-one name="manager" class="User" column="MANAGER_ID"/>
+
+
+    </class>
+</hibernate-mapping>

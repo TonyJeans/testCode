@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace :命名空间,sql隔离-->
+<mapper namespace="test">
+<!-- 
+id 唯一标识
+parameterType指定参数类型(pojo)
+resultType:返回结果集类型
+#{}占位符,如果传入的是基本类型string long double int boolean float等,中的变量名称可以随意
+ -->
+	<select id="findUserById" parameterType="java.lang.Integer" resultType="com.syl.pojobak.User">
+		SELECT * FROM user where id=#{id}
+	</select>
+	
+	<!-- 返回结构是集合,返回类型写泛型参数类型 
+	${}拼接符号,字符串原样拼接,传入的参数是基本类型,中的变量名称必须是value
+	拼接符号有注入的风险,谨慎使用
+	-->
+	<select id="findUserByUserName" parameterType="java.lang.String" resultType="com.syl.pojobak.User">
+		SELECT * FROM user where username LIKE '%${value}%'
+	</select>
+	
+	<!-- 
+	#{传入是pojo类型} 必须是属性.属性.属性
+	SELECT LAST_INSERT_ID() 返回数据库自增主键
+	keyProperty将返回的的主键放入传入的pojo中id的属性中保存()
+	order相对于insert语句的执行顺序,在insert前before在insert后after
+	resultType id的类型是keyProperty的类型
+	 -->
+	<insert id="insertUser" parameterType="com.syl.pojobak.User">
+		<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+			SELECT LAST_INSERT_ID() 
+		</selectKey>
+		INSERT INTO `user` (username,birthday,sex,address) VALUES(#{username},#{birthday},#{sex},#{address})
+	</insert>
+	
+	<delete id="delUserById" parameterType="int">
+		DELETE FROM `user` WHERE id=#{xxx}
+	</delete>
+	
+	<update id="updateUserById" parameterType="com.syl.pojobak.User">
+		UPDATE `user` set username =#{username} WHERE id = #{id}
+	</update>
+</mapper>
